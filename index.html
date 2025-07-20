@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+  <meta charset="UTF-8">
+  <title>قیمت ارزهای دیجیتال</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #f0f0f0;
+      text-align: center;
+      padding: 30px;
+      direction: rtl;
+    }
+    h1 { color: #333; }
+    .price-box {
+      background: #fff;
+      border-radius: 8px;
+      padding: 20px;
+      margin: 15px auto;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+      max-width: 320px;
+    }
+    button {
+      padding: 10px 20px;
+      margin: 10px 5px;
+      border: none;
+      background: #0088cc;
+      color: #fff;
+      font-size: 16px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover { background: #006699; }
+  </style>
+</head>
+<body>
+
+  <h1>💹 قیمت ارزهای دیجیتال</h1>
+  <div>
+    <button onclick="getPrice('bitcoin')">قیمت بیت‌کوین</button>
+    <button onclick="getPrice('ethereum')">قیمت اتریوم</button>
+  </div>
+
+  <div id="result" class="price-box">لطفاً یک ارز را انتخاب کنید.</div>
+
+  <script>
+    async function getPrice(coin) {
+      const url = `https://api.coingecko.com/api/v3/simple/price?ids=${coin}&vs_currencies=usd`;
+      try {
+        const res = await fetch(url);
+        const data = await res.json();
+        const price = data[coin].usd;
+        document.getElementById('result').innerHTML =
+          `💰 قیمت ${coin === 'bitcoin' ? 'بیت‌کوین' : 'اتریوم'}: <strong>$${price}</strong>`;
+      } catch (err) {
+        document.getElementById('result').innerHTML =
+          'خطا در دریافت قیمت، لطفاً بعداً تلاش کنید.';
+        console.error(err);
+      }
+    }
+  </script>
+
+</body>
+</html>
